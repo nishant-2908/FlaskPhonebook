@@ -3,7 +3,7 @@
 ## Flask implementation of Phonebook
 ## Table of Content
 - [Getting Started](#getting-started)
-- [Installation][#installation]
+- [Installation](#installation)
 - [Usage](#usage)
 - [Contributing](#contributing)
 - [License](#license)
