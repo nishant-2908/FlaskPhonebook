@@ -1,0 +1,173 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>Home</title>
+{% endblock %}
+{% block body %}
+<div class="container text-center">
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+    <div class="alert alert-primary" role="alert">
+      {{ message }}
+    </div>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+    <ul class="nav justify-content-end">
+        <li class="nav-item">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Contact</button>
+        </li>
+        <li class="ms-3 nav-item">
+          <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">Delete Contact</button>
+      </li>
+    </ul>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add Contact</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body ">
+              Add a New Contact
+              <form action="/add_contact_be" method="post" id="form">
+                <div class="mb-3 text-start">
+                  <label for="first_na" class="form-label">
+                    <h3 class="choose-title field">First Name</h3>
+                  </label>
+                  <input type="text" class="form-control" placeholder="First Name" name="first_name" id="first_name" autofocus autocapitalize="off" autocomplete="off">
+                </div>
+                <div class="mb-3 text-start">
+                  <label for="middle_name" class="form-label">
+                    <h3 class="choose-title">Middle Name</h3>
+                  </label>
+                  <input type="text" class="form-control" placeholder="Middle Name" name="middle_name" id="middle_name" autofocus autocapitalize="off" autocomplete="off">
+                </div>
+                <div class="mb-3 text-start">
+                    <label for="last_name" class="form-label">
+                      <h3 class="choose-title field">Last Name</h3>
+                    </label>
+                    <input type="text" class="form-control" placeholder="Last Name" name="last_name" id="last_name" autofocus autocapitalize="off" autocomplete="off">
+                </div>
+                <div class="mb-3 text-start">
+                <label for="mobile_number" class="form-label">
+                    <h3 class="choose-title field">Mobile Number</h3>
+                </label>
+                <input type="text" class="form-control" placeholder="Mobile Number" name="mobile_number" id="mobile_number" autofocus autocapitalize="off" autocomplete="off">
+                </div>
+                <div class="warning text-danger" id="warning">
+                    
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="submit_button">Save changes</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Add Contact</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body ">
+            <div class="d-flex mb-3">
+              <div class="me-auto p-2">Edit Contact</div>
+              <div class="p-2"></div>
+              <div class="fw-bold" id="contact_id"></div>
+              
+            </div>
+            <form action="/edit_contact_be" method="post" id="form_edit">
+              <input type="hidden" name="contact_id" class="hidden_contact_id" id="contact_id_edit">
+              <div class="mb-3 text-start">
+                <label for="first_name" class="form-label">
+                  <h3 class="choose-title field">First Name</h3>
+                </label>
+                <input type="text" class="form-control" placeholder="First Name" name="first_name" id="first_name_edit" autofocus autocapitalize="off" autocomplete="off">
+              </div>
+              <div class="mb-3 text-start">
+                <label for="middle_name" class="form-label">
+                  <h3 class="choose-title">Middle Name</h3>
+                </label>
+                <input type="text" class="form-control" placeholder="Middle Name" name="middle_name" id="middle_name_edit" autofocus autocapitalize="off" autocomplete="off">
+              </div>
+              <div class="mb-3 text-start">
+                  <label for="last_name" class="form-label">
+                    <h3 class="choose-title field">Last Name</h3>
+                  </label>
+                  <input type="text" class="form-control" placeholder="Last Name" name="last_name" id="last_name_edit" autofocus autocapitalize="off" autocomplete="off">
+              </div>
+              <div class="mb-3 text-start">
+              <label for="mobile_number" class="form-label">
+                  <h3 class="choose-title field">Mobile Number</h3>
+              </label>
+              <input type="text" class="form-control" placeholder="Mobile Number" name="mobile_number" id="mobile_number_edit" autofocus autocapitalize="off" autocomplete="off">
+              </div>
+              <div class="warning text-danger" id="warning_edit">
+                  
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary" id="submit_button_edit">Save changes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteContactModal" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="deleteContactHeading">Delete Contact</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body ">
+            <form action="/delete_contact_be" method="post" id="form_delete">
+              <input type="hidden" name="contact_id" id="contact_id_delete_input">
+              <input type="hidden" name="first_name" id="first_name_delete_input">
+              <input type="hidden" name="middle_name" id="middle_name_delete_input">
+              <input type="hidden" name="last_name" id="last_name_delete_input">
+              <input type="hidden" name="number" id="number_delete_input">
+              <div class="container text-start">
+                <div class="row row-cols-2">
+                  <div class="col">First Name</div>
+                  <div class="col fw-bold" id="first_name_delete"></div>
+                  <div class="col">Middle Name</div>
+                  <div class="col fw-bold" id="middle_name_delete"></div>
+                  <div class="col">Last Name</div>
+                  <div class="col fw-bold" id="last_name_delete"></div>
+                  <div class="col">Mobile Number</div>
+                  <div class="col fw-bold" id="mobile_number_delete"></div>
+                </div>
+              </div>
+              <div class="warning text-danger" id="warning_edit">
+                  
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-danger" id="delete_contact_button">Delete Contact</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <table class="table align-middle" id="table">
+        
+    </table>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+  var userId = "{{ session['user_id'] }}";
+</script>
+
+<script src="{{ url_for('static', filename='home.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "layout.html" %}
+{% block title %}
+<title>Login</title>
+{% endblock %}
+{% block body %}
+<form class="container mb-3" style="width: 40%;" id="form" action="/login_be" method="POST">
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+            <div class="alert alert-primary center">{{ message }}</div>
+        {% endfor %}
+        </ul>
+    {% endif %}
+    {% endwith %}
+    <h3 class="text-center">Login</h3>
+    <div class="mb-3">
+        <label for="username" class="form-label">
+            <h3 class="choose-title field">Username</h3>
+        </label>
+        <input type="text" class="form-control" placeholder="Username"
+        name="username" id="username" autofocus autocapitalize="off" autocomplete="off">
+    </div>
+    <div class="mb-3">
+        <label for="password" class="form-label">
+            <h3 class="choose-title field">Password</h3>
+        </label>
+        <input type="password" class="form-control" placeholder="Password"
+        name="password" id="password" autofocus autocapitalize="off" autocomplete="off">
+    </div>
+    <div id="warning" class="mb-3 center">
+        <h5 id="warning_text" class="alert alert-danger">Danger Text here</h5>
+    </div>
+</form>
+<div class="mb-3 center">
+    <button class="btn btn-primary" id="submit" name="submit_button">Login</button>
+</div>
+{% endblock %}
+{% block script %}
+<script src="/static/login.js"></script>
+{% endblock %}
